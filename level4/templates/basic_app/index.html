@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="jumbotron">
+<h1>Django Level Five</h1>
+</div>
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'firstApp/custom.css' %}">
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'firstApp/css/bootstrap.min.css' %}">
+</head>
+<body>
+{% block body %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="Name">Name:</label>
+                    <input class="form-control" type="text" name="Name" id="Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">Email:</label>
+                    <input class="form-control" type="email" name="Email" id="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Text">TEXT:</label>
+                    <textarea class="form-control" rows="5" name="Text" id="Text" required></textarea>
+                </div>
+                <input type="submit" value="Save">
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    </div>
+{% endblock %}
+
+
+    if request.method == 'POST':
+        if request.POST.get('Name') and \
+                request.POST.get('Email') and request.POST.get('Text'):
+            htmlsave = User()
+            htmlsave.Name = request.POST.get('Name')
+            htmlsave.Email = request.POST.get('Email')
+            htmlsave.Text = request.POST.get('Text')
+            htmlsave.save()
+            return HttpResponse('Data saved')
+        else:
+            return HttpResponse('All fields are required')
+    else:
+        return render(request, 'firstApp/dhtml.html')
